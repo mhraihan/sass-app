@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\ProfileController;
+use App\Http\Controllers\Account\PasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,13 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth', 'as' => 'account.']
      * Profile
      */
     route::get("/profile", [ProfileController::class, 'index'])->name('profile.index');
-    route::post("/store", [ProfileController::class, 'store'])->name('profile.store');
+    route::post("/profile/store", [ProfileController::class, 'store'])->name('profile.store');
+
+    /**
+     * Password
+     */
+    route::get("/password", [PasswordController::class, 'index'])->name('password.index');
+    route::post("/password/store", [PasswordController::class, 'store'])->name('password.store');
 });
 
 require __DIR__ . '/auth.php';

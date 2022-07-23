@@ -17,7 +17,7 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
-        @include('layouts.navigation')
+        @include('layouts.partials.navigation')
 
         {{-- @auth
             <!-- Page Heading -->
@@ -30,6 +30,7 @@
 
         <!-- Page Content -->
         <main>
+            @include('layouts.partials.alerts._alerts')
             {{ $slot }}
         </main>
     </div>
