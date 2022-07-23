@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Account;
 
-use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\Account\PasswordUpdated;
+
+use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Requests\Account\PasswordStoreRequest;
 
 class PasswordController extends Controller
@@ -18,13 +18,13 @@ class PasswordController extends Controller
 
     public function store(PasswordStoreRequest $request)
     {
-        // dd($request->all());
+        // dd($request->user());
         $request->user()->update(
             [
                 'password' => Hash::make($request->password)
             ]
         );
-        Mail::to($request->user())->send(new PasswordUpdated());
+        event(new PasswordReset($request->user()));
         return redirect()->route('account.index')->withSuccess('Password updated successfully');
     }
 }

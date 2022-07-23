@@ -17,7 +17,7 @@
 
 <body>
     <div class="font-sans text-gray-900 antialiased">
-        @include('layouts.navigation')
+        @include('layouts.partials.navigation')
 
         {{ $slot }}
     </div>
