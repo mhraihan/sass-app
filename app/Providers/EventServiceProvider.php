@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use App\Listeners\SendPasswordResetEmail;
 use Illuminate\Auth\Events\PasswordReset;
+use App\Listeners\Auth\SendActivationEmail;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -19,6 +20,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+            SendActivationEmail::class
         ],
         PasswordReset::class => [
             //Listiners that you need to be called after triggering the PasswordReset event.

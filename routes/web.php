@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\PasswordController;
+use App\Http\Controllers\Auth\ActivateUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +19,11 @@ use App\Http\Controllers\Account\PasswordController;
 |
 */
 
-Route::get('/token', function () {
-    $token = auth()->user()->generateConfirmationToken();
-    dd($token);
-})->middleware(['auth']);
+// Route::get('/token', function () {
+//     $token = auth()->user()->generateConfirmationToken();
+//     dd($token);
+// })->middleware(['auth']);
+
 /* Route::get('/', function () {
     return view('welcome');
 });
@@ -31,7 +33,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard'); */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
 /**
  * Account
  */
@@ -48,6 +50,11 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth', 'as' => 'account.']
      */
     route::get("/password", [PasswordController::class, 'index'])->name('password.index');
     route::post("/password/store", [PasswordController::class, 'store'])->name('password.store');
+});
+
+
+Route::group(['prefix' => 'activation', 'as' => 'activate.'], function () {
+    route::get("/{token}", [ActivateUserController::class, 'activate'])->name('activate');
 });
 
 require __DIR__ . '/auth.php';
