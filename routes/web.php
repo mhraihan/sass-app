@@ -18,6 +18,10 @@ use App\Http\Controllers\Account\PasswordController;
 |
 */
 
+Route::get('/token', function () {
+    $token = auth()->user()->generateConfirmationToken();
+    dd($token);
+})->middleware(['auth']);
 /* Route::get('/', function () {
     return view('welcome');
 });
