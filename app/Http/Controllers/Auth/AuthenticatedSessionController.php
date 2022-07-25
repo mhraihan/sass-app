@@ -29,7 +29,10 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
-
+        $user = Auth::user();
+        if ($user->hasNotActived()) {
+            $this->destroy($request, 'Account not actived yet');
+        }
         $request->session()->regenerate();
 
         return redirect()->intended(RouteServiceProvider::HOME);
@@ -41,14 +44,16 @@ class AuthenticatedSessionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request, $message = null)
     {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-
+        if ($message) {
+            return redirect('/')->withError($message);
+        }
         return redirect('/');
     }
 }

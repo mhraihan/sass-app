@@ -43,4 +43,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function hasActived()
+    {
+        return $this->activated;
+    }
+    public function hasNotActived()
+    {
+        return !$this->activated;
+    }
 }
