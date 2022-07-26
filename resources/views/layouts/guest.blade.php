@@ -19,7 +19,10 @@
     <div class="font-sans text-gray-900 antialiased">
         @include('layouts.partials.navigation')
 
-        {{ $slot }}
+        <main>
+            @include('layouts.partials.alerts._alerts')
+            {{ $slot }}
+        </main>
     </div>
 </body>
 

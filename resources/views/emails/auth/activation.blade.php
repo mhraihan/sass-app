@@ -1,7 +1,7 @@
 @component('mail::message')
-# Introduction
+# Please active your account
 
-The body of your message.
+please click the button to activate your account.
 
 @component('mail::button', ['url' => route('activate.activate',$token)])
     Activate

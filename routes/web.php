@@ -7,6 +7,7 @@ use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\PasswordController;
 use App\Http\Controllers\Auth\ActivateUserController;
+use App\Http\Controllers\Auth\ActivationResendController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,8 +54,10 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth', 'as' => 'account.']
 });
 
 
-Route::group(['prefix' => 'activation', 'as' => 'activate.', 'middleware' => ['guest', 'confirmation_token.expired:/']], function () {
-    route::get("/{token}", [ActivateUserController::class, 'activate'])->name('activate');
+Route::group(['prefix' => 'activation', 'as' => 'activate.', 'middleware' => ['guest']], function () {
+    route::get("/resend", [ActivationResendController::class, 'index'])->name('resend');
+    route::post("/resend", [ActivationResendController::class, 'store'])->name('resend.store');
+    route::get("/{token}", [ActivateUserController::class, 'activate'])->name('activate')->middleware('confirmation_token.expired:/');
 });
 
 require __DIR__ . '/auth.php';
