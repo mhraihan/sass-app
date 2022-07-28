@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\PlanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\PasswordController;
 use App\Http\Controllers\Auth\ActivateUserController;
 use App\Http\Controllers\Auth\ActivationResendController;
+use App\Http\Controllers\Subscription\PlanTeamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,11 +55,24 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth', 'as' => 'account.']
     route::post("/password/store", [PasswordController::class, 'store'])->name('password.store');
 });
 
+/**
+ * Account Activation
+ */
 
 Route::group(['prefix' => 'activation', 'as' => 'activate.', 'middleware' => ['guest']], function () {
     route::get("/resend", [ActivationResendController::class, 'index'])->name('resend');
     route::post("/resend", [ActivationResendController::class, 'store'])->name('resend.store');
     route::get("/{token}", [ActivateUserController::class, 'activate'])->name('activate')->middleware('confirmation_token.expired:/');
+});
+
+
+/**
+ * Subscription Plan
+ */
+
+Route::group(['prefix' => 'plans', 'as' => 'plans.'], function () {
+    route::get("/", [PlanController::class, 'index'])->name('index');
+    route::get("/teams", [PlanTeamController::class, 'index'])->name('teams.index');
 });
 
 require __DIR__ . '/auth.php';
